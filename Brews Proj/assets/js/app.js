@@ -65,19 +65,23 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   if (chosenXAxis === "Score") {
     var xlabel = "Score:";
+    var label2 = "";
   }
   else if (chosenXAxis === "ABV") {
   	var xlabel = "ABV:";
+    var label2 = "%";
+
   }
   else {
     var xlabel = "Ratings:";
+    var label2 = "";
   }
 
   var toolTip = d3.tip()
     .attr("class", "d3-tip")
     .offset([80, -60])
     .html(function(d) {
-      return (`${d.Beer}<br>${xlabel} ${d[chosenXAxis]}<br>rAvg: ${d.rAvg}`);
+      return (`${d.Beer}<br>${xlabel} ${d[chosenXAxis]}${label2}<br>rAvg: ${d.rAvg}`);
     });
 
   circlesGroup.call(toolTip);
@@ -106,10 +110,8 @@ d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
 		d.Score = +d.Score;
 		d.rAvg = +d.rAvg;
 		d.Ratings = +d.Ratings;
-
+    d.ABV = parseFloat(d.ABV);
 	});
-
-  
 
 	// xLinearScale function above csv import
   var xLinearScale = xScale(beerData, chosenXAxis);
@@ -140,7 +142,7 @@ d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.rAvg))
-    .attr("r", 20)
+    .attr("r", 5)
     .attr("fill", "blue")
     .attr("opacity", ".5");
 
