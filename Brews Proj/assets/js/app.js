@@ -1,257 +1,543 @@
-// @TODO: YOUR CODE HERE!
+// Grab the width of the containing box
+var width = parseInt(d3.select("#scatter").style("width"));
 
-var svgWidth = 960;
-var svgHeight = 500;
+// Designate the height of the graph
+var height = width - width / 3.9;
 
-var margin = {
-  top: 20,
-  right: 40,
-  bottom: 80,
-  left: 100
-};
+// Margin spacing for graph
+var margin = 20;
 
-var width = svgWidth - margin.left - margin.right;
-var height = svgHeight - margin.top - margin.bottom;
+// space for placing words
+var labelArea = 110;
 
-//SVG Wrapper
+// padding for the text at the bottom and left axes
+var tPadBot = 40;
+var tPadLeft = 40;
+
+// Create the actual canvas for the graph
 var svg = d3
   .select("#scatter")
   .append("svg")
-  .attr("width", svgWidth)
-  .attr("height", svgHeight);
+  .attr("width", width)
+  .attr("height", height)
+  .attr("class", "chart");
 
-// Append an SVG group
-var chartGroup = svg.append("g")
-  .attr("transform", `translate(${margin.left}, ${margin.top})`);
-
-// Initial Params
-var chosenXAxis = "Score";
-
-// function used for updating x-scale var upon click on axis label
-function xScale(beerData, chosenXAxis) {
-  // create scales
-  var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(beerData, d => d[chosenXAxis]),
-      d3.max(beerData, d => d[chosenXAxis])
-    ])
-    .range([0, width]);
-
-  return xLinearScale;
-}
-// function used for updating xAxis var upon click on axis label
-function renderAxes(newXScale, xAxis) {
-  var bottomAxis = d3.axisBottom(newXScale);
-
-  xAxis.transition()
-    .duration(1000)
-    .call(bottomAxis);
-
-  return xAxis;
-}
-
-// function used for updating circles group with a transition to
-// new circles
-function renderCircles(circlesGroup, newXScale, chosenXaxis) {
-
-  circlesGroup.transition()
-    .duration(1000)
-    .attr("cx", d => newXScale(d[chosenXAxis]));
-
-  return circlesGroup;
-}
-
-// function used for updating circles group with new tooltip
-function updateToolTip(chosenXAxis, circlesGroup) {
-
-  if (chosenXAxis === "Score") {
-    var xlabel = "Score:";
-    var label2 = "";
-  }
-  else if (chosenXAxis === "ABV") {
-  	var xlabel = "ABV:";
-    var label2 = "%";
-
+// Set the radius for each dot that will appear in the graph.
+var circRadius;
+function crGet() {
+  if (width <= 530) {
+    circRadius = 5;
   }
   else {
-    var xlabel = "Ratings:";
-    var label2 = "";
+    circRadius = 10;
+  }
+}
+crGet();
+
+// The Labels for our Axes
+
+// A) Bottom Axis
+// ==============
+
+// We create a group element to nest our bottom axes labels.
+svg.append("g").attr("class", "xText");
+// xText will allows us to select the group without excess code.
+var xText = d3.select(".xText");
+
+// We give xText a transform property that places it at the bottom of the chart
+function xTextRefresh() {
+  xText.attr(
+    "transform",
+    "translate(" +
+      ((width - labelArea) / 2 + labelArea) +
+      ", " +
+      (height - margin - tPadBot) +
+      ")"
+  );
+}
+xTextRefresh();
+
+// Now we use xText to append three text SVG files, with y coordinates specified to space out the values.
+// 1. Score
+xText
+  .append("text")
+  .attr("y", -26)
+  .attr("data-name", "Score")
+  .attr("data-axis", "x")
+  .attr("class", "aText active x")
+  .text("Score");
+// 2. ABV
+xText
+  .append("text")
+  .attr("y", -5)
+  .attr("data-name", "ABV")
+  .attr("data-axis", "x")
+  .attr("class", "aText inactive x")
+  .text("ABV (%)");
+
+// B) Left Axis
+// ============
+
+// Specifying the variables like this allows us to make our transform attributes more readable.
+var leftTextX = margin + tPadLeft;
+var leftTextY = (height + labelArea) / 2 - labelArea;
+
+// We add a second label group, this time for the axis left of the chart.
+svg.append("g").attr("class", "yText");
+
+// yText will allows us to select the group without excess code.
+var yText = d3.select(".yText");
+
+// Like before, we nest the group's transform attr in a function
+// to make changing it on window change an easy operation.
+function yTextRefresh() {
+  yText.attr(
+    "transform",
+    "translate(" + leftTextX + ", " + leftTextY + ")rotate(-90)"
+  );
+}
+yTextRefresh();
+
+// Now we append the text.
+// 1. rAvg
+yText
+  .append("text")
+  .attr("y", 26)
+  .attr("data-name", "rAvg")
+  .attr("data-axis", "y")
+  .attr("class", "aText active y")
+  .text("Average Ratings");
+
+// 2. ABV
+yText
+  .append("text")
+  .attr("y", -26)
+  .attr("data-name", "ABV")
+  .attr("data-axis", "y")
+  .attr("class", "aText inactive y")
+  .text("ABV (%)");
+
+// // 3. Ratings
+yText
+  .append("text")
+  .attr("x", 0)
+  .attr("data-name", "Ratings")
+  .attr("data-axis", "y")
+  .attr("class", "aText inactive y")
+  .text("Ratings");
+
+// 2. Import our .csv file.
+// ========================
+
+// Import our CSV data with d3's .csv import method.
+d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
+  // Visualize the data
+  visualize(beerData);
+
+  beerData.forEach(function(d) {
+    d.Table = +d.Table;
+    d.Score = +d.Score;
+    d.rAvg = +d.rAvg;
+    d.Ratings = +d.Ratings;
+    d.ABV = parseFloat(d.ABV);
+  });
+});
+
+// 3. Create our visualization function
+// ====================================
+function visualize(theData) {
+  // PART 1: Essential Local Variables and Functions
+  // =================================
+  // curX and curY will determine what data gets represented in each axis.
+  // We designate our defaults here, which carry the same names
+  // as the headings in their matching .csv data file.
+  var curX = "Score";
+  var curY = "rAvg";
+
+  // We also save empty variables for our the min and max values of x and y.
+  // this will allow us to alter the values in functions and remove repetitious code.
+  var xMin;
+  var xMax;
+  var yMin;
+  var yMax;
+
+  // This function allows us to set up tooltip rules (see d3-tip.js).
+  var toolTip = d3
+    .tip()
+    .attr("class", "d3-tip")
+    .offset([100, -100])
+    .html(function(d) {
+      // x key
+      var theX;
+      // Grab the state name.
+      var theBeer = "<div>" + d.Beer + "</div>";
+      // Snatch the y value's key and value.
+      if (curY === "rAvg") {
+        // Grab the y key and a version of the value formatted to show avg
+        theY = "<div>" + curY + ": " + d[curY] + "</div>";
+      }
+      else if (curY === "Ratings") {
+        theY = "<div>" + curY + ": " + d[curY] + "</div>"
+      }
+      else {
+        // Otherwise
+        // Grab the y key and a version of the value formatted to include commas after every third digit.
+        theY = "<div>" +
+          curY +
+          ": " +
+          parseFloat(d[curY]).toLocaleString("en") +
+          "%</div>";
+      }
+      // If the x key is Score
+      if (curX === "Score") {
+        // Grab the x key and a version of the value formatted to show score
+        theX = "<div>" + curX + ": " + d[curX] + "</div>";
+      }
+      else {
+        // Otherwise
+        // Grab the x key and a version of the value formatted to include commas after every third digit.
+        theX = "<div>" +
+          curX +
+          ": " +
+          parseFloat(d[curX]).toLocaleString("en") +
+          "%</div>";
+      }
+      // Display what we capture.
+      return theBeer + theX + theY;
+    });
+  // Call the toolTip function.
+  svg.call(toolTip);
+
+  // PART 2: D.R.Y!
+  // ==============
+  // These functions remove some repitition from later code.
+  // This will be more obvious in parts 3 and 4.
+
+  // a. change the min and max for x
+  function xMinMax() {
+    // min will grab the smallest datum from the selected column.
+    xMin = d3.min(theData, function(d) {
+      return parseFloat(d[curX]) * 0.90;
+    });
+
+    // .max will grab the largest datum from the selected column.
+    xMax = d3.max(theData, function(d) {
+      return parseFloat(d[curX]) * 1.10;
+    });
   }
 
-  var toolTip = d3.tip()
-    .attr("class", "d3-tip")
-    .offset([80, -60])
-    .html(function(d) {
-      return (`${d.Beer}<br>${xlabel} ${d[chosenXAxis]}${label2}<br>rAvg: ${d.rAvg}`);
+  // b. change the min and max for y
+  function yMinMax() {
+    // min will grab the smallest datum from the selected column.
+    yMin = d3.min(theData, function(d) {
+      return parseFloat(d[curY]) * 0.90;
     });
 
-  circlesGroup.call(toolTip);
-
-  // circlesGroup.on("mouseover", function(d) {
-  //   toolTip.show(d);
-  // })
-
-  circlesGroup.on("mouseover", toolTip.show)
-
-  //onmouseout event
-  	.on("mouseout", function(d, index) {
-      toolTip.hide(d);
+    // .max will grab the largest datum from the selected column.
+    yMax = d3.max(theData, function(d) {
+      return parseFloat(d[curY]) * 1.10;
     });
+  }
 
-  return circlesGroup;
-}
+  // c. change the classes (and appearance) of label text when clicked.
+  function labelChange(axis, clickedText) {
+    // Switch the currently active to inactive.
+    d3
+      .selectAll(".aText")
+      .filter("." + axis)
+      .filter(".active")
+      .classed("active", false)
+      .classed("inactive", true);
 
+    // Switch the text just clicked to active.
+    clickedText.classed("inactive", false).classed("active", true);
+  }
 
-//Load the data
-d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
-	console.log(beerData);
+  // Part 3: Instantiate the Scatter Plot
+  // ====================================
+  // This will add the first placement of our data and axes to the scatter plot.
 
-	beerData.forEach(function(d) {
-		d.Table = +d.Table;
-		d.Score = +d.Score;
-		d.rAvg = +d.rAvg;
-		d.Ratings = +d.Ratings;
-    d.ABV = parseFloat(d.ABV);
-	});
+  // First grab the min and max values of x and y.
+  xMinMax();
+  yMinMax();
 
-	// xLinearScale function above csv import
-  var xLinearScale = xScale(beerData, chosenXAxis);
+  // With the min and max values now defined, we can create our scales.
+  // Notice in the range method how we include the margin and word area.
+  // This tells d3 to place our circles in an area starting after the margin and word area.
+  var xScale = d3
+    .scaleLinear()
+    .domain([xMin, xMax])
+    .range([margin + labelArea, width - margin]);
+  var yScale = d3
+    .scaleLinear()
+    .domain([yMin, yMax])
+    // Height is inverses due to how d3 calc's y-axis placement
+    .range([height - margin - labelArea, margin]);
 
-  // Create y scale function
-  var yLinearScale = d3.scaleLinear()
-    .domain([2.8, d3.max(beerData, d => d.rAvg)])
-    .range([height, 0]);
+  // We pass the scales into the axis methods to create the axes.
+  var xAxis = d3.axisBottom(xScale);
+  var yAxis = d3.axisLeft(yScale);
 
-  // Create initial axis functions
-  var bottomAxis = d3.axisBottom(xLinearScale);
-  var leftAxis = d3.axisLeft(yLinearScale);
+  // Determine x and y tick counts.
+  // Note: Saved as a function for easy mobile updates.
+  function tickCount() {
+    if (width <= 500) {
+      xAxis.ticks(5);
+      yAxis.ticks(5);
+    }
+    else {
+      xAxis.ticks(10);
+      yAxis.ticks(10);
+    }
+  }
+  tickCount();
 
-  // append x axis
-  var xAxis = chartGroup.append("g")
-    .classed("x-axis", true)
-    .attr("transform", `translate(0, ${height})`)
-    .call(bottomAxis);
+  // We append the axes in group elements. By calling them, we include
+  // all of the numbers, borders and ticks.
+  // The transform attribute specifies where to place the axes.
+  svg
+    .append("g")
+    .call(xAxis)
+    .attr("class", "xAxis")
+    .attr("transform", "translate(0," + (height - margin - labelArea) + ")");
+  svg
+    .append("g")
+    .call(yAxis)
+    .attr("class", "yAxis")
+    .attr("transform", "translate(" + (margin + labelArea) + ", 0)");
 
-  // append y axis
-  chartGroup.append("g")
-    .call(leftAxis);
+  // Now let's make a grouping for our dots and their labels.
+  var theCircles = svg.selectAll("g theCircles").data(theData).enter();
 
-  // append initial circles
-  var circlesGroup = chartGroup.selectAll("circle")
-    .data(beerData)
-    .enter()
+  // We append the circles for each row of data (or each state, in this case).
+  theCircles
     .append("circle")
-    .attr("cx", d => xLinearScale(d[chosenXAxis]))
-    .attr("cy", d => yLinearScale(d.rAvg))
-    .attr("r", 5)
-    .attr("fill", "blue")
-    .attr("opacity", ".5");
-
-  // var textGroup = chartGroup.selectAll("tspan")
-  //   .data(healthData)
-  //   .enter()
-  //   .append("text")
-  //   .attr("x", d => xLinearScale(d[chosenXAxis])-10)
-  //   .attr("y", d => yLinearScale(d.healthcare)+5)
-  //   .attr("r", 20)
-  //   .text(function(d) {return d.abbr})
-  //   .attr({"font-size":10});    
-
-  // Create group for  3 x- axis labels
-  var labelsGroup = chartGroup.append("g")
-    .attr("transform", `translate(${width / 2}, ${height + 20})`);
-
-  var ScoreLabel = labelsGroup.append("text")
-    .attr("x", 0)
-    .attr("y", 20)
-    .attr("value", "Score") // value to grab for event listener
-    .classed("active", true)
-    .text("Score");
-
-  var ABVLabel = labelsGroup.append("text")
-    .attr("x", 0)
-    .attr("y", 40)
-    .attr("value", "ABV") // value to grab for event listener
-    .classed("inactive", true)
-    .text("ABV (%)");
-
-  var RatingsLabel = labelsGroup.append("text")
-    .attr("x", 0)
-    .attr("y", 60)
-    .attr("value", "Ratings") // value to grab for event listener
-    .classed("inactive", true)
-    .text("Ratings");
-
-  // append y axis
-  chartGroup.append("text")
-    .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - (height / 2))
-    .attr("dy", "1em")
-    .classed("axis-text", true)
-    .text("rAvg");
-
-  // updateToolTip function above csv import
-  var circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
-
-  // x axis labels event listener
-  labelsGroup.selectAll("text")
-    .on("click", function() {
-      // get value of selection
-      var value = d3.select(this).attr("value");
-      if (value !== chosenXAxis) {
-
-        // replaces chosenXAxis with value
-        chosenXAxis = value;
-
-        // console.log(chosenXAxis)
-
-        // functions here found above csv import
-        // updates x scale for new data
-        xLinearScale = xScale(beerData, chosenXAxis);
-
-        // updates x axis with transition
-        xAxis = renderAxes(xLinearScale, xAxis);
-        
-        // updates circles with new x values
-        circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
-
-        // updates tooltips with new info
-        circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
-
-        // changes classes to change bold text
-        if (chosenXAxis === "ABV") {
-          ABVLabel
-            .classed("active", true)
-            .classed("inactive", false);
-          RatingsLabel
-            .classed("active", false)
-            .classed("inactive", true);
-          ScoreLabel
-            .classed("active", false)
-            .classed("inactive", true);
-        }
-        else if (chosenXAxis === "Ratings") {
-          RatingsLabel
-            .classed("active", true)
-            .classed("inactive", false);
-          ABVLabel
-            .classed("active", false)
-            .classed("inactive", true);
-          ScoreLabel
-            .classed("active", false)
-            .classed("inactive", true);
-        }
-        else {
-          ScoreLabel
-            .classed("active", true)
-            .classed("inactive", false);
-          ABVLabel
-            .classed("active", false)
-            .classed("inactive", true);
-          RatingsLabel
-            .classed("active", false)
-            .classed("inactive", true);
-        }
-      }
+    // These attr's specify location, size and class.
+    .attr("cx", function(d) {
+      return xScale(d[curX]);
+    })
+    .attr("cy", function(d) {
+      return yScale(d[curY]);
+    })
+    .attr("r", circRadius)
+    .attr("class", function(d) {
+      return "stateCircle ";
+    })
+    // Hover rules
+    .on("mouseover", function(d) {
+      // Show the tooltip
+      toolTip.show(d, this);
+      // Highlight the state circle's border
+      d3.select(this).style("stroke", "#323232");
+    })
+    .on("mouseout", function(d) {
+      // Remove the tooltip
+      toolTip.hide(d);
+      // Remove highlight
+      d3.select(this).style("stroke", "#e3e3e3");
     });
-});
+
+  // With the circles on our graph, we need matching labels.
+  theCircles
+    .append("text")
+    // We return the abbreviation to .text, which makes the text the abbreviation.
+    .text(function(d) {
+      return "";
+    })
+    // Now place the text using our scale.
+    .attr("dx", function(d) {
+      return xScale(d[curX]);
+    })
+    .attr("dy", function(d) {
+      // When the size of the text is the radius,
+      // adding a third of the radius to the height
+      // pushes it into the middle of the circle.
+      return yScale(d[curY]) + circRadius / 2.5;
+    })
+    .attr("font-size", circRadius)
+    .attr("class", "stateText")
+    // Hover Rules
+    .on("mouseover", function(d) {
+      // Show the tooltip
+      toolTip.show(d);
+      // Highlight the state circle's border
+      d3.select("." + d.abbr).style("stroke", "#323232");
+    })
+    .on("mouseout", function(d) {
+      // Remove tooltip
+      toolTip.hide(d);
+      // Remove highlight
+      d3.select("." + d.State).style("stroke", "#e3e3e3");
+    });
+
+  // Part 4: Make the Graph Dynamic
+  // ==========================
+  // This section will allow the user to click on any label
+  // and display the data it references.
+
+  // Select all axis text and add this d3 click event.
+  d3.selectAll(".aText").on("click", function() {
+    // Make sure we save a selection of the clicked text,
+    // so we can reference it without typing out the invoker each time.
+    var self = d3.select(this);
+
+    // We only want to run this on inactive labels.
+    // It's a waste of the processor to execute the function
+    // if the data is already displayed on the graph.
+    if (self.classed("inactive")) {
+      // Grab the name and axis saved in label.
+      var axis = self.attr("data-axis");
+      var name = self.attr("data-name");
+
+      // When x is the saved axis, execute this:
+      if (axis === "x") {
+        // Make curX the same as the data name.
+        curX = name;
+
+        // Change the min and max of the x-axis
+        xMinMax();
+
+        // Update the domain of x.
+        xScale.domain([xMin, xMax]);
+
+        // Now use a transition when we update the xAxis.
+        svg.select(".xAxis").transition().duration(300).call(xAxis);
+
+        // With the axis changed, let's update the location of the beer circles.
+        d3.selectAll("circle").each(function() {
+          // Each beer circle gets a transition for it's new attribute.
+          // This will lend the circle a motion tween
+          // from it's original spot to the new location.
+          d3
+            .select(this)
+            .transition()
+            .attr("cx", function(d) {
+              return xScale(d[curX]);
+            })
+            .duration(300);
+        });
+
+        // We need change the location of the beer texts, too.
+        d3.selectAll(".stateText").each(function() {
+          // We give each beer text the same motion tween as the matching circle.
+          d3
+            .select(this)
+            .transition()
+            .attr("dx", function(d) {
+              return xScale(d[curX]);
+            })
+            .duration(300);
+        });
+
+        // Finally, change the classes of the last active label and the clicked label.
+        labelChange(axis, self);
+      }
+      else {
+        // When y is the saved axis, execute this:
+        // Make curY the same as the data name.
+        curY = name;
+
+        // Change the min and max of the y-axis.
+        yMinMax();
+
+        // Update the domain of y.
+        yScale.domain([yMin, yMax]);
+
+        // Update Y Axis
+        svg.select(".yAxis").transition().duration(300).call(yAxis);
+
+        // With the axis changed, let's update the location of the beer circles.
+        d3.selectAll("circle").each(function() {
+          // Each beer circle gets a transition for it's new attribute.
+          // This will lend the circle a motion tween
+          // from it's original spot to the new location.
+          d3
+            .select(this)
+            .transition()
+            .attr("cy", function(d) {
+              return yScale(d[curY]);
+            })
+            .duration(300);
+        });
+
+        // We need change the location of the beer texts, too.
+        d3.selectAll(".stateText").each(function() {
+          // We give each state text the same motion tween as the matching circle.
+          d3
+            .select(this)
+            .transition()
+            .attr("dy", function(d) {
+              return yScale(d[curY]) + circRadius / 3;
+            })
+            .duration(300);
+        });
+
+        // Finally, change the classes of the last active label and the clicked label.
+        labelChange(axis, self);
+      }
+    }
+  });
+
+  // Part 5: Mobile Responsive
+  // =========================
+  // With d3, we can call a resize function whenever the window dimensions change.
+  // This make's it possible to add true mobile-responsiveness to our charts.
+  d3.select(window).on("resize", resize);
+
+  // One caveat: we need to specify what specific parts of the chart need size and position changes.
+  function resize() {
+    // Redefine the width, height and leftTextY (the three variables dependent on the width of the window).
+    width = parseInt(d3.select("#scatter").style("width"));
+    height = width - width / 3.9;
+    leftTextY = (height + labelArea) / 2 - labelArea;
+
+    // Apply the width and height to the svg canvas.
+    svg.attr("width", width).attr("height", height);
+
+    // Change the xScale and yScale ranges
+    xScale.range([margin + labelArea, width - margin]);
+    yScale.range([height - margin - labelArea, margin]);
+
+    // With the scales changes, update the axes (and the height of the x-axis)
+    svg
+      .select(".xAxis")
+      .call(xAxis)
+      .attr("transform", "translate(0," + (height - margin - labelArea) + ")");
+
+    svg.select(".yAxis").call(yAxis);
+
+    // Update the ticks on each axis.
+    tickCount();
+
+    // Update the labels.
+    xTextRefresh();
+    yTextRefresh();
+
+    // Update the radius of each dot.
+    crGet();
+
+    // With the axis changed, let's update the location and radius of the state circles.
+    d3
+      .selectAll("circle")
+      .attr("cy", function(d) {
+        return yScale(d[curY]);
+      })
+      .attr("cx", function(d) {
+        return xScale(d[curX]);
+      })
+      .attr("r", function() {
+        return circRadius;
+      });
+
+    // We need change the location and size of the state texts, too.
+    d3
+      .selectAll(".stateText")
+      .attr("dy", function(d) {
+        return yScale(d[curY]) + circRadius / 3;
+      })
+      .attr("dx", function(d) {
+        return xScale(d[curX]);
+      })
+      .attr("r", circRadius / 3);
+  }
+}
