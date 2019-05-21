@@ -76,14 +76,20 @@ body {
 #txtbox {
   background-color: white;
   color: #3b1d08;
+  padding-bottom: 80px;
+  height: 100%
 }
 #txt {
   font-size: 15px;
   color: #3b1d08;
 }
 
+/* set map, body, and html to 100% of the screen size */
+#map,
+html {
+  height: 100%;
+}
 
-/*styling footer*/
 #footer {
   position: fixed;
   bottom: 0;
