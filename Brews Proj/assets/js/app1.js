@@ -1,33 +1,35 @@
 // Store Paths to Data Files
-var queryPath = "../assets/data/JSON/gz_2010_us_040_00_500k.json";
-var csvPath = "../../gorbas/CraftBrewerise.csv";
+var JSONPath = "../assets/data/JSON/gz_2010_us_040_00_500k.json";
+var csvPath = "../../gorbas/CraftBreweries.csv";
+
+// If-else functions to select state colors
+function getColor(d) {
+    return d >= 50  ? '#E31A1C' :
+           d > 40   ? '#FC4E2A' :
+           d > 30   ? '#FD8D3C' :
+           d > 20   ? '#FEB24C' :
+           d > 10   ? '#FED976' :
+                      '#FFEDA0' ;
+}
+
+// Setting up style object to be passed to each feature
+function style() {
+    d3.csv(csvPath, function(Data){
+    return (console.log(Data), {
+        fillColor: getColor(Data['Total Breweries Rank']),
+        weight: 2,
+        opacity: 1,
+        color: getColor(Data['Total Breweries Rank']),
+        dashArray: '3',
+        fillOpacity: 0.7
+    });
+});
+}
+
 
 // Perform a GET request to the query path
-d3.json(queryPath, function(data) {
-  console.log(data.features);
-
-    // d3.csv(csvPath, Data => {
-    //     function getColor(d) {
-    //         return d >= 50  ? '#E31A1C' :
-    //                d > 40   ? '#FC4E2A' :
-    //                d > 30   ? '#FD8D3C' :
-    //                d > 20   ? '#FEB24C' :
-    //                d > 10   ? '#FED976' :
-    //                           '#FFEDA0' ;
-    //     }
-
-    //     function style(Data) {
-    //         return {
-    //             fillColor: getColor(Data["Total Breweries Rank"]),
-    //             weight: 2,
-    //             opacity: 1,
-    //             color: 'white',
-    //             dashArray: '3',
-    //             fillOpacity: 0.7
-    //         };
-    //     }
-    
-
+d3.json(JSONPath, function(data) {
+    console.log(data.features);
 
     // Add Clickable popups for every feature element
     function onEachFeature(feature, layer) {
@@ -40,7 +42,7 @@ d3.json(queryPath, function(data) {
     
     var stateslayer = L.geoJSON(data.features, {
         onEachFeature: onEachFeature,
-        // style: style
+        style: style
     });
   
     // Set earthquake data as an overlay layer
