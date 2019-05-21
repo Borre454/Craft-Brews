@@ -12,7 +12,16 @@ html {
 body {
   /* Padding bottom by footer height */
   padding-bottom: 80px;
+  height: 100%
 }
+
+
+/* set map, body, and html to 100% of the screen size */
+#map,
+html {
+  height: 100%;
+}
+
 
 #footer {
   position: absolute;

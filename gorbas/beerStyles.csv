@@ -1,0 +1,46 @@
+group,type
+Pale Lager,American Lager
+Pale Lager,German Helles
+Pale Lager,German Pilsner
+Pale Lager,czech or Bohemian Pilsner
+Dark Lager,Amber American Lager
+Dark Lager,Oktoberfest
+Dark Lager,German Schwarzbier
+Dark Lager,Vienna Lager
+Bock,Bock
+Bock,Doppelbock
+Bock,Weizenbock
+Bock,Maibock
+Brown Ale,American Brown Ale
+Brown Ale,English Brown Ale
+Pale Ale,American Amber Ale
+Pale Ale,American Pale Ale
+Pale Ale,Blonde Ale
+Pale Ale,English Bitter
+Pale Ale,English Pale Ale
+IPA,American IPA
+IPA,Imperial/Double Pale Ales
+IPA,English IPA
+Porter,American Imperial Porter
+Porter,English Brown Porter
+Porter,Robust Porter
+Stout,American Stout
+Stout,American Imperial Stout
+Stout,Oatmeal Stout
+Stout,Milk Stout
+Stout,Irish Dry Stout
+Belgian,Belgian Pale Ale
+Belgian,Belgian Dubbel
+Belgian,Belgian Tripel
+Belgian,Belgian Quadrupel
+Belgian,Belgian Strong Dark Ale
+Belgian,Belgian Saison
+Wheat,American Pale Wheat
+Wheat,Belgian Witbier
+Wheat,Berliner Weisse
+Wheat,Dunkelweizen
+Wheat,hefeweizen
+Wild/Sour,American Sour
+Wild/Sour,Belgian Fruit Lambic
+Wild/Sour,Flanders Red Ale
+Wild/Sour,Belgian Gueuze
