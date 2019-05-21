@@ -35,7 +35,6 @@ function crGet() {
 crGet();
 
 // The Labels for our Axes
-
 // A) Bottom Axis
 // ==============
 
@@ -181,7 +180,7 @@ function visualize(theData) {
       }
       else {
         // Otherwise
-        // Grab the y key and a version of the value formatted to include commas after every third digit.
+        // Grab the y key and a version of the value formatted to include % for ABV.
         theY = "<div>" +
           curY +
           ": " +
@@ -195,7 +194,7 @@ function visualize(theData) {
       }
       else {
         // Otherwise
-        // Grab the x key and a version of the value formatted to include commas after every third digit.
+        // Grab the x key and a version of the value formatted to include % for ABV.
         theX = "<div>" +
           curX +
           ": " +
@@ -210,8 +209,7 @@ function visualize(theData) {
 
   // PART 2: D.R.Y!
   // ==============
-  // These functions remove some repitition from later code.
-  // This will be more obvious in parts 3 and 4.
+  // These functions remove some repitition from later code
 
   // a. change the min and max for x
   function xMinMax() {
@@ -261,9 +259,7 @@ function visualize(theData) {
   xMinMax();
   yMinMax();
 
-  // With the min and max values now defined, we can create our scales.
-  // Notice in the range method how we include the margin and word area.
-  // This tells d3 to place our circles in an area starting after the margin and word area.
+  // With the min and max values now defined, we can create our scales
   var xScale = d3
     .scaleLinear()
     .domain([xMin, xMax])
@@ -278,8 +274,7 @@ function visualize(theData) {
   var xAxis = d3.axisBottom(xScale);
   var yAxis = d3.axisLeft(yScale);
 
-  // Determine x and y tick counts.
-  // Note: Saved as a function for easy mobile updates.
+  // Determine x and y tick counts
   function tickCount() {
     if (width <= 500) {
       xAxis.ticks(5);
@@ -309,7 +304,7 @@ function visualize(theData) {
   // Now let's make a grouping for our dots and their labels.
   var theCircles = svg.selectAll("g theCircles").data(theData).enter();
 
-  // We append the circles for each row of data (or each state, in this case).
+  // We append the circles for each row of data (or each beer, in this case).
   theCircles
     .append("circle")
     // These attr's specify location, size and class.
@@ -328,7 +323,7 @@ function visualize(theData) {
       // Show the tooltip
       toolTip.show(d, this);
       // Highlight the state circle's border
-      d3.select(this).style("stroke", "#323232");
+      d3.select(this).style("stroke", "red");
     })
     .on("mouseout", function(d) {
       // Remove the tooltip
@@ -337,43 +332,8 @@ function visualize(theData) {
       d3.select(this).style("stroke", "#e3e3e3");
     });
 
-  // With the circles on our graph, we need matching labels.
-  theCircles
-    .append("text")
-    // We return the abbreviation to .text, which makes the text the abbreviation.
-    .text(function(d) {
-      return "";
-    })
-    // Now place the text using our scale.
-    .attr("dx", function(d) {
-      return xScale(d[curX]);
-    })
-    .attr("dy", function(d) {
-      // When the size of the text is the radius,
-      // adding a third of the radius to the height
-      // pushes it into the middle of the circle.
-      return yScale(d[curY]) + circRadius / 2.5;
-    })
-    .attr("font-size", circRadius)
-    .attr("class", "stateText")
-    // Hover Rules
-    .on("mouseover", function(d) {
-      // Show the tooltip
-      toolTip.show(d);
-      // Highlight the state circle's border
-      d3.select("." + d.abbr).style("stroke", "#323232");
-    })
-    .on("mouseout", function(d) {
-      // Remove tooltip
-      toolTip.hide(d);
-      // Remove highlight
-      d3.select("." + d.State).style("stroke", "#e3e3e3");
-    });
-
   // Part 4: Make the Graph Dynamic
   // ==========================
-  // This section will allow the user to click on any label
-  // and display the data it references.
 
   // Select all axis text and add this d3 click event.
   d3.selectAll(".aText").on("click", function() {
@@ -382,8 +342,6 @@ function visualize(theData) {
     var self = d3.select(this);
 
     // We only want to run this on inactive labels.
-    // It's a waste of the processor to execute the function
-    // if the data is already displayed on the graph.
     if (self.classed("inactive")) {
       // Grab the name and axis saved in label.
       var axis = self.attr("data-axis");
@@ -405,9 +363,7 @@ function visualize(theData) {
 
         // With the axis changed, let's update the location of the beer circles.
         d3.selectAll("circle").each(function() {
-          // Each beer circle gets a transition for it's new attribute.
-          // This will lend the circle a motion tween
-          // from it's original spot to the new location.
+          // Each beer circle gets a transition for it's new attribute
           d3
             .select(this)
             .transition()
@@ -456,18 +412,6 @@ function visualize(theData) {
             .transition()
             .attr("cy", function(d) {
               return yScale(d[curY]);
-            })
-            .duration(300);
-        });
-
-        // We need change the location of the beer texts, too.
-        d3.selectAll(".stateText").each(function() {
-          // We give each state text the same motion tween as the matching circle.
-          d3
-            .select(this)
-            .transition()
-            .attr("dy", function(d) {
-              return yScale(d[curY]) + circRadius / 3;
             })
             .duration(300);
         });
@@ -528,16 +472,5 @@ function visualize(theData) {
       .attr("r", function() {
         return circRadius;
       });
-
-    // We need change the location and size of the state texts, too.
-    d3
-      .selectAll(".stateText")
-      .attr("dy", function(d) {
-        return yScale(d[curY]) + circRadius / 3;
-      })
-      .attr("dx", function(d) {
-        return xScale(d[curX]);
-      })
-      .attr("r", circRadius / 3);
   }
 }
