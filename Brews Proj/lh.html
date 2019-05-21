@@ -18,38 +18,62 @@
 </head>
 
 <body>
+
+<!-- *****************Navigation Bar ******* -->
+  <div class="topnav">   
+    <div class="row">
+      <div class="col-sm-2"><a href="index.html"><b>Home</b></a> </div>
+      <div class="col-sm-4"> </div>
+      <div class="col-sm-2">    <a href="a.html">one map</a> </div>
+      <div class="col-sm-2">    <a href="b.html">a chart</a></div>
+      <div class="col-sm-2">    <a href="c.html">c page</a></div>
+    </div>
+  </div> 
+
+
+              <!-- page heading. -->
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-md-12">
-        <h1>Craft Beer</h1>
+        <h1>left hand chart</h1>
       </div>
     </div>
+              <!-- intro blurb and links. --> 
     <div class="row">
-      <div class="col-xs-12  col-md-9">
-        <div id="scatter">
-          <!-- We append our chart here. -->
+      <div class="col-sm-1" id="txtbox"></div>
+
+      <div class="col-sm-9" id="txtbox">insert chart
+      </div>
+
+      <div class="col-sm-2" id="txtbox">
+        <div id="txt">
+           <p> <b># insert text about the data viz</b></p>
+           
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-xs-12  col-md-9">
-        <div class="article">
-          <h2>Craft Beer Findings</h2>
 
-          <p></p>
+ <!-- below is the container closing tag-->
+</div>
 
-        </div>
+
+  <!-- Footer--  change the text alignment/order -->
+  <div class="container-fluid" id="footer">
+  <!--<div id="footer">-->
+    <div class="row row-no-gutters">
+      
+      <div class="col-sm-3" id="footertxt">Data Source:  https://data.world/gswider/2013-acbf-styles-ratings
       </div>
-    </div>
+      <div class="col-sm-9">
+        Created by: Mike, Chris, Cindy, Robert
+      </div>
   </div>
+</div>
 
-  <!-- Footer-->
-  <div id="footer">
-    <p>Created by: Mike, Chris, Cindy, Robert</p>
-  </div>
+  <!-- scripts - untag the js script -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
-  <script type="text/javascript" src="assets/js/app.js"></script>
+ <!-- <script type="text/javascript" src="assets/js/app.js"></script>-->
 
 </body>
 
