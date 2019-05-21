@@ -31,8 +31,8 @@ var chosenXAxis = "Score";
 function xScale(beerData, chosenXAxis) {
   // create scales
   var xLinearScale = d3.scaleLinear()
-    .domain([d3.min(beerData, d => d[chosenXAxis]),
-      d3.max(beerData, d => d[chosenXAxis])
+    .domain([d3.min(beerData, d => d[chosenXAxis]) * 0.8,
+      d3.max(beerData, d => d[chosenXAxis]) * 1.2
     ])
     .range([0, width]);
 
@@ -65,23 +65,19 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   if (chosenXAxis === "Score") {
     var xlabel = "Score:";
-    var label2 = "";
   }
   else if (chosenXAxis === "ABV") {
   	var xlabel = "ABV:";
-    var label2 = "%";
-
   }
   else {
     var xlabel = "Ratings:";
-    var label2 = "";
   }
 
   var toolTip = d3.tip()
     .attr("class", "d3-tip")
     .offset([80, -60])
     .html(function(d) {
-      return (`${d.Beer}<br>${xlabel} ${d[chosenXAxis]}${label2}<br>rAvg: ${d.rAvg}`);
+      return (`${d.Beer}<br>${xlabel} ${d[chosenXAxis]}<br>rAvg: ${d.rAvg}`);
     });
 
   circlesGroup.call(toolTip);
@@ -102,7 +98,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
 
 //Load the data
-d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
+d3.csv("assets/data/craft_beer_fest_data2.csv").then(function(beerData) {
 	console.log(beerData);
 
 	beerData.forEach(function(d) {
@@ -110,15 +106,17 @@ d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
 		d.Score = +d.Score;
 		d.rAvg = +d.rAvg;
 		d.Ratings = +d.Ratings;
-    d.ABV = parseFloat(d.ABV);
+
 	});
+
+  
 
 	// xLinearScale function above csv import
   var xLinearScale = xScale(beerData, chosenXAxis);
 
   // Create y scale function
   var yLinearScale = d3.scaleLinear()
-    .domain([2.8, d3.max(beerData, d => d.rAvg)])
+    .domain([0, d3.max(beerData, d => d.rAvg)])
     .range([height, 0]);
 
   // Create initial axis functions
@@ -142,7 +140,7 @@ d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.rAvg))
-    .attr("r", 5)
+    .attr("r", 20)
     .attr("fill", "blue")
     .attr("opacity", ".5");
 
