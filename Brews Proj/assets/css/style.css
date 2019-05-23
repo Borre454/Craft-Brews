@@ -113,3 +113,12 @@ html {
   vertical-align: middle;
   text-align: center;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  grid-gap: .5rem;
+  padding: .5rem;
+  grid-auto-rows: minmax(100px, auto);
+  min-height: calc(100vh - 1rem);
+}

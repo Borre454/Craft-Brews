@@ -1,5 +1,5 @@
 // Store Paths to Data Files
-var JSONPath = "../assets/data/JSON/gz_2010_us_040_00_500k.json";
+var JSONPath = "../data/JSON/gz_2010_us_040_00_500k.json";
 var csvPath = "../../gorbas/CraftBreweries.csv";
 
 // If-else functions to select state colors
