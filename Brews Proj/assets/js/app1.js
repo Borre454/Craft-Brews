@@ -1,6 +1,6 @@
 // Store Paths to Data Files
-var JSONPath = "../data/JSON/gz_2010_us_040_00_500k.json";
-var csvPath = "../../gorbas/CraftBreweries.csv";
+var JSONPath = "../data/JSON/newgeo.json";
+
 
 // If-else functions to select state colors
 function getColor(d) {
@@ -13,17 +13,17 @@ function getColor(d) {
 }
 
 // Setting up style object to be passed to each feature
-function style() {
-    d3.csv(csvPath, function(Data){
+function style(Data) {
+{
     return (console.log(Data), {
-        fillColor: getColor(Data['Total Breweries Rank']),
+        fillColor: getColor(Data['Craft Breweries Rank']),
         weight: 2,
         opacity: 1,
-        color: getColor(Data['Total Breweries Rank']),
+        color: getColor(Data['Craft Breweries Rank']),
         dashArray: '3',
         fillOpacity: 0.7
     });
-});
+};
 }
 
 
@@ -34,7 +34,9 @@ d3.json(JSONPath, function(data) {
     // Add Clickable popups for every feature element
     function onEachFeature(feature, layer) {
         layer.bindPopup("<h3>" + feature.properties.NAME +
-        "</h3><hr><p>State #: " + feature.properties.STATE + "</p>")
+        "</h3><hr><p>Craft Breweries Rank: " + feature['Craft Breweries Rank'] + 
+        "<hr><p>Total Capita per Brewery: " + feature["Total Capita/ Breweries"] +
+        "<hr><p>Production Rank: " + feature["Production_Rank"] + "</p>")
     };
 
 
@@ -47,6 +49,7 @@ d3.json(JSONPath, function(data) {
   
     // Set earthquake data as an overlay layer
     var stateBounds = L.layerGroup([stateslayer]);
+    
 
     // Define streetmap and satellite layers
     var streetmap = L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -71,7 +74,7 @@ d3.json(JSONPath, function(data) {
 
     // Define an overlay object to hold the overlay layers
     var overlayMaps = {
-        "State Boundaries": stateBounds
+        "Craft Breweries Rank": stateBounds
     };
 
     // Create a new map
