@@ -1,13 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  
-  <title>Craft Beer</title>
 
+  <title>Chloropleth</title>
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css"
+  integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
+  crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+  integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+  crossorigin=""></script>
+
+<!--From Home Screen -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
@@ -17,9 +25,9 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
     crossorigin="anonymous">
     
-  <link rel="stylesheet" href="assets/css/bootstrap.min.css" media="screen">
-  <link rel="stylesheet" href="assets/css/style.css" media="screen">
-  <link rel="stylesheet" href="assets/css/d3Style.css">
+  <link rel="stylesheet" href="../css/bootstrap.min.css" media="screen">
+  <link rel="stylesheet" href="../css/style.css" media="screen">
+  <link rel="stylesheet" href="../css/d3Style.css">
 
 </head>
 
@@ -51,9 +59,9 @@
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Visualizations <span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                 <li><a href="assets/templates/map.html">Chloropleth</a></li>
-                  <li><a href="assets/templates/bubble.html">Bubble Chart</a></li>
-                  <li><a href="assets/templates/scatter.html">Scatter</a></li>
+                 <li><a href="map.html">Chloropleth</a></li>
+                  <li><a href="bubble.html">Bubble Chart</a></li>
+                  <li><a href="scatter.html">Scatter</a></li>
                   <li><a href="#">Data?</a></li>
                 </ul>
               </li>
@@ -69,29 +77,13 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 col-md-12">
-        <h1>Craft Beer</h1>
+        <h1>Map</h1>
       </div> <!--/.col -->
     </div> <!--/.row -->
 
-    <!-- intro blurb and links. -->
-    <div class="row">
-      <div class="col-xs-11" id="txtbox">
-        <div id="txt">
-          <p> <b># Project2-Brews - Questions We Would Like to Answer:</b></p>
-           <ul>
-             <li>  (Where) is craft beer most popular? </li>
-             <li> Visualize on a map where craft beer is most popular based on the amount of brewerys in each State. </li>
-             <br>
-             <li> (What) aspects make a craft beer popular? </li>
-             <li> Visualize using a bubble plot the average ratings by score and ABV %. </li>
-             <br>
-             <li> (When/How) did the market for craft beer change? </li>
-             <li> Line graph of historical data showing total craft barrels each year since 1971. </li>
-           </ul>
-        </div> <!--/#txt -->
-      </div> <!--/#txtbox -->
 
-    </div> <!-- /.row -->
+    <!-- The div where we will inject our map -->
+    <div id="map"></div>
 
   </div> <!--/.container -->
 
@@ -108,13 +100,21 @@
     </div> <!--/.row .row-no-gutters -->
   </div> <!--/.container-fluid -->
 
-  <!-- scripts - untag the js script -->
+  <!-- scripts -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+
+  <!-- D3 CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
-<!--   <script type="text/javascript" src="assets/js/app2.js"></script>
- -->
+
+  <!-- Our JS -->
+  <script type="text/javascript" src="../js/config.js"></script>
+  <script type="text/javascript" src="../js/app1.js"></script>
+
 </body>
 
 </html>
+
+
+
