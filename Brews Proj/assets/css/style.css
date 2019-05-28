@@ -18,6 +18,12 @@ body {
   background-color: #ededed;
 }
 
+h1 {
+  text-align: center;
+  color: #000;
+  background-color: #ededed;
+}
+
 /* Media query for body */
 @media only screen and (max-width: 767px) {
   /* Set background color to white on small screens */
@@ -37,18 +43,18 @@ body {
 
 #logo {
   /* Box-model */
-  height: 60px;
-  padding-top: 20px;
-  padding-bottom: 5px;
+  height: 0px;
+  padding-top: 15px;
+  padding-bottom: 0px;
 
   /* Positioning */
-  margin-left: 70px;
+  margin-left: 0px;
   font-family: Georgia, Times, "Times New Roman", serif;
 
   /* Typography */
-  font-size: 24px;
+  font-size: 34px;
   font-weight: bold;
-  color: #fff;
+  color: #000;
 
   /* Visual */
   background: #8b4513;
@@ -63,7 +69,7 @@ body {
 .navbar-right-custom {
   /* Box-model */
   padding-top: 0px;
-  padding-right: 20px;
+  padding-right: 0px;
 
   /* Typography */
   font-family: Arial;
@@ -73,6 +79,9 @@ body {
 /* Nav element hover state */
 .navbar-default .navbar-nav > li > a:hover {
   color: white;
+}
+.navbar-default .navbar-nav > li > a {
+  color: black;
 }
 
 /* Media query for nav */
@@ -85,9 +94,36 @@ body {
     width: 100%;
 
     /* Box-model */
-    height: 40px;
-    padding-top: 20px;
-    padding-bottom: 5px;
+    height: 0px;
+    padding-top: 15px;
+    padding-bottom: 0px;
+
+    /* Positioning */
+    margin-left: 0;
+    font-family: Georgia, Times, "Times New Roman", serif;
+
+    /* Typography */
+    font-size: 28px;
+    font-weight: bold;
+    color: #000;
+
+    /* Visual */
+    background: #8b4513;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .navbar-header {
+    background-color: #8b4513;
+  }
+
+  #logo {
+    width: 100%;
+
+    /* Box-model */
+    height: 0px;
+    padding-top: 15px;
+    padding-bottom: 0px;
 
     /* Positioning */
     margin-left: 0;
@@ -96,7 +132,7 @@ body {
     /* Typography */
     font-size: 24px;
     font-weight: bold;
-    color: #fff;
+    color: #000;
 
     /* Visual */
     background: #8b4513;
@@ -180,7 +216,7 @@ html {
   font-size: 15px;
   font-style: italic;
   text-align: center; 
-  color:white;
+  color: #000;
 }
 #footer p {
   font-size: 20px;

@@ -1,5 +1,6 @@
 // Store Paths to Data Files
 var JSONPath = "../data/JSON/newgeo.json";
+console.log(JSONPath)
 
 
 // If-else functions to select state colors
