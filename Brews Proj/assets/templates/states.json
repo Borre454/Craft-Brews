@@ -1,0 +1,26 @@
+{
+    "name": "States",
+    "children": [
+        {
+            "name": "California",
+            "children": null,
+            "size": 21
+        },
+        {
+            "name": "Colorado",
+            "children": null,
+            "size": 16
+        },
+        {
+            "name": "DC",
+            "children": null,
+            "size": 3
+        },
+        {
+            "name": "Hawaii",
+            "children": null,
+            "size": 5
+        }
+    ],
+    "size": 700
+}
