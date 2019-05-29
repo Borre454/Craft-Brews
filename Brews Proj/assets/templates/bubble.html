@@ -42,7 +42,15 @@
       visibility: hidden;
       pointer-events: none;     
   }
-  
+
+  .radio-inline {
+      text-shadow:
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+  }
+      
   
   </style>
 <body>
@@ -94,9 +102,10 @@
       <div class="col-lg-12 col-md-12">
         <h1>Craft Beer: Bubble Chart Analysis</h1>
         <div class="pull-right">
-          <label class="radio-inline"><input value="option1" class="filters" type="radio" name="optradio" checked>Breweries</label>
-          <label class="radio-inline"><input value="option2" class="filters" type="radio" name="optradio">States</label>
-          <label class="radio-inline"><input value="option3" class="filters" type="radio" name="optradio">Cities</label>
+          <label class="radio-inline"><input value="breweriesBubbles.json" class="filters" type="radio" name="optradio" checked>Breweries</label>
+          <label class="radio-inline"><input value="statesBubbles.json" class="filters" type="radio" name="optradio">States</label>
+          <label class="radio-inline"><input value="citiesBubbles.json" class="filters" type="radio" name="optradio">Cities</label>
+          <label class="radio-inline"><input value="styleBubbles.json" class="filters" type="radio" name="optradio">Style</label>
         </div>
       </div>
       </div> <!--/.col -->
@@ -160,7 +169,7 @@
         //.text("a simple tooltip");
     
     
-    d3.json("states.json", function(error, root) {
+    d3.json("breweriesBubbles.json", function(error, root) {
       // Throw warning
       if (error) return console.warn(error);
     
@@ -249,7 +258,7 @@
       
       d3.selectAll("svg > *").remove();
       
-      d3.json("data.json", function(error, root) {
+      d3.json(radioValue, function(error, root) {
         // Throw warning
         if (error) return console.warn(error);
       
