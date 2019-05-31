@@ -1,5 +1,5 @@
 // Import our CSV data with d3's .csv import method.
-d3.csv("../data/brewery_names_summary.csv").then(function(beerData) {
+d3.csv("../static/data/brewery_names_summary.csv").then(function(beerData) {
     // Visualize the data
     console.log(beerData);
   

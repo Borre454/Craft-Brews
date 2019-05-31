@@ -7,7 +7,7 @@ body {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 
   /* Visual */
-  background-color: #ededed;
+  background: url("../images/beer_bottles.png") no-repeat center fixed;
 }
 
 h1 {
@@ -149,7 +149,6 @@ h1 {
 /* background/style
 /* Sticky Footer rules   (https://getbootstrap.com/examples/sticky-footer/) */
 
-
 .background-cover {
   /* Padding bottom by footer height */
     background: url("../images/beer_bottles.png") no-repeat center fixed; 
@@ -159,6 +158,7 @@ h1 {
     /*color: white; */
   
 }
+
 .iframeContainer {
   padding: 20px;
   border: 1px solid #e3e3e3;
@@ -204,8 +204,7 @@ html {
 
 .Legend {
   line-height: 15px;
-  color: lightgrey;
-  font-weight: bold
+  color: black;
 }
 
 .Legend i {
@@ -222,8 +221,8 @@ html {
   bottom: 0;
   width: 100%; 
   height: 20px;
-  padding-top: 10px;
-  padding-bottom: 50px;
+  /* padding-top: 10px; */
+  /* padding-bottom: 50px; */
   text-align: center;
   background-color: #8b4513;
 }

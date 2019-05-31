@@ -1,5 +1,5 @@
 // Store Paths to Data Files
-var JSONPath = "../data/JSON/newgeo.json";
+// var JSONPath = "{{ url_for('static', filename='data/JSON/newgeo.json') }}";
 
 // If-else functions to select state colors
 function getColor(d) {
@@ -32,7 +32,7 @@ function style(Data) {
 
 
 // Perform a GET request to the query path
-d3.json(JSONPath, function(data) {
+// d3.json(JSONPath, function(data) {
 
     function highlightFeature(e) {
         e.target.setStyle({
@@ -66,7 +66,7 @@ d3.json(JSONPath, function(data) {
 
 
     // Using the features array sent back in the API data, create a GeoJSON layer and add it to the map
-    var stateslayer = L.geoJSON(data.features, {
+    var stateslayer = L.geoJSON(statesData, {
         style: style,
         onEachFeature: onEachFeature
     });
@@ -122,8 +122,8 @@ d3.json(JSONPath, function(data) {
 
     var div = L.DomUtil.create('div', 'Legend'),
         rank = [0, 10, 15, 20, 25, 30, 35, 40, 45, 50],
-        labels = [];
-
+        labels = ['<strong>State Rank</strong>'];
+        div.innerHTML = labels + '<br>'
     // loop through our density intervals and generate a label with a colored square for each interval
     for (var i = 0; i < rank.length; i++) {
         div.innerHTML +=
@@ -134,4 +134,4 @@ d3.json(JSONPath, function(data) {
     };
 
     legend.addTo(myMap);
-});
+// });
