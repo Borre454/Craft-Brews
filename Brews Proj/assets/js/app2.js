@@ -129,7 +129,7 @@ yText
 // ========================
 
 // Import our CSV data with d3's .csv import method.
-d3.csv("assets/data/craft_beer_fest_data3.csv").then(function(beerData) {
+d3.csv("../data/craft_beer_fest_data3.csv").then(function(beerData) {
   // Visualize the data
   visualize(beerData);
 
@@ -323,7 +323,7 @@ function visualize(theData) {
       // Show the tooltip
       toolTip.show(d, this);
       // Highlight the state circle's border
-      d3.select(this).style("stroke", "red");
+      d3.select(this).style("stroke", "#8b4513");
     })
     .on("mouseout", function(d) {
       // Remove the tooltip
