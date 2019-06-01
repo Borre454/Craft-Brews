@@ -189,11 +189,6 @@
       .style("opacity", 0);
       //.text("a simple tooltip");
 
-
-  // d3.json("breweriesBubbles.json", function(error, root) {
-  //   // Throw warning
-  //   if (error) return console.warn(error);
-
     // Get the data from the JSON file 
     pts = getTheData(breweriesDataObjFinal);
 
@@ -220,7 +215,7 @@
   function visualiseIt(pts){
     // transition
     var t = d3.transition()
-        .duration(25000);
+        .duration(250000000);
     // Define a node
     // Use a <g> element to put multiple elements in the same location, such
     // as a <circle> and <text> element.
@@ -278,10 +273,6 @@
     var radioValue = $("input[name='optradio']:checked").val();
     
     d3.selectAll("svg > *").remove();
-    
-    // d3.json(collectionsObject[radioValue], function(error, root) {
-    //   // Throw warning
-    //   if (error) return console.warn(error);
     
       // Get the data from the JSON file 
       pts = getTheData(collectionsObject[radioValue]);

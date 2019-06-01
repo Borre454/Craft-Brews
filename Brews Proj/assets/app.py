@@ -57,7 +57,7 @@ def scatter():
     """Return the scatter plots."""
     return render_template("scatter.html")
 
-@app.route("/")
+@app.route("/data")
 def data():
     print(appData)
     return  appData
