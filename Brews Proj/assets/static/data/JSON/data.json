@@ -1,0 +1,26 @@
+{
+    "name": "Breweries",
+    "children": [
+        {
+            "name": "Abita Brewing Co.",
+            "children": null,
+            "size": 2
+        },
+        {
+            "name": "Allagash Brewing Company",
+            "children": null,
+            "size": 2
+        },
+        {
+            "name": "Avery Brewing Company",
+            "children": null,
+            "size": 3
+        },
+        {
+            "name": "Brewery Ommegang",
+            "children": null,
+            "size": 4
+        }
+    ],
+    "size": 70
+}

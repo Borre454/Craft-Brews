@@ -7,18 +7,13 @@ body {
   font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
 
   /* Visual */
-  background-color: #ededed;
+  background: url("../images/beer_bottles.png") no-repeat center fixed;
 }
 
 h1 {
   text-align: center;
   color: #000;
-  text-shadow:
-        -1px -1px 0 #fff,
-        1px -1px 0 #fff,
-        -1px 1px 0 #fff,
-        1px 1px 0 #fff;
-  /* background-color: #ededed; */
+  background-color: #ededed;
 }
 
 /* Media query for body */
@@ -154,16 +149,16 @@ h1 {
 /* background/style
 /* Sticky Footer rules   (https://getbootstrap.com/examples/sticky-footer/) */
 
-
 .background-cover {
   /* Padding bottom by footer height */
-    background: url("../images/beer_bottles.png") repeat center fixed; 
+    background: url("../images/beer_bottles.png") no-repeat center fixed; 
     background-size: cover;
     /*padding-bottom: 80px;*/
     height: 100%;
     /*color: white; */
   
 }
+
 .iframeContainer {
   padding: 20px;
   border: 1px solid #e3e3e3;
@@ -209,8 +204,7 @@ html {
 
 .Legend {
   line-height: 15px;
-  color: #000;
-  font-weight: bold
+  color: black;
 }
 
 .Legend i {
@@ -227,8 +221,8 @@ html {
   bottom: 0;
   width: 100%; 
   height: 20px;
-  padding-top: 10px;
-  padding-bottom: 50px;
+  /* padding-top: 10px; */
+  /* padding-bottom: 50px; */
   text-align: center;
   background-color: #8b4513;
 }
