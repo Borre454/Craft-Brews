@@ -113,7 +113,7 @@
 
   <div class="row">
       <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <div id="body_bubbles">
+        <div class="col-xs-8 col-sm-9 col-md-10 col-lg-8 offset-xs-4 offset-sm-3 offset-md-4 offset-lg-4" id="body_bubbles">
         </div>
       </div>
   </div>
@@ -145,7 +145,7 @@
   <script>
 
     // Constants
-    var diameter = 760,
+    var diameter = 500,
         format = d3.format(",d"),
         color = d3.scale.category20c();
     
@@ -199,7 +199,7 @@
     function visualiseIt(pts){
       // transition
       var t = d3.transition()
-          .duration(75000);
+          .duration(25000);
       // Define a node
       // Use a <g> element to put multiple elements in the same location, such
       // as a <circle> and <text> element.
@@ -221,7 +221,7 @@
           .text(function(d) { return d.className.substring(0, d.r / 3); });
     
       // Tooltip for bubble
-      node.on("mouseover", function(d) {        
+      node.on("mouseover", function(d) {    
                   div .transition()
                       .duration(100)    
                       .style("visibility", "visible")
@@ -229,10 +229,10 @@
                   div .html(
                           "Package: " +d.packageName +"<br/>"+
                           "Class: "   +d.className   +"<br/>"+
-                          "Size: "    +d.value
+                          "Size: "    +d.value 
                       )
-                      .style("left", (d3.event.pageX) + "px")             
-                      .style("top", (d3.event.pageY - 28) + "px");
+                      .style("left", (d3.event.pageX -475) + "px")             
+                      .style("top", (d3.event.pageY-200) + "px");
                   })
           .on("mouseout", function(){return div.style("visibility", "hidden");});
     } // visualiseIt(pts)

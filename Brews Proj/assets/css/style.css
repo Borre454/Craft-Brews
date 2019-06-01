@@ -13,7 +13,12 @@ body {
 h1 {
   text-align: center;
   color: #000;
-  background-color: #ededed;
+  text-shadow:
+        -1px -1px 0 #fff,
+        1px -1px 0 #fff,
+        -1px 1px 0 #fff,
+        1px 1px 0 #fff;
+  /* background-color: #ededed; */
 }
 
 /* Media query for body */
@@ -152,7 +157,7 @@ h1 {
 
 .background-cover {
   /* Padding bottom by footer height */
-    background: url("../images/beer_bottles.png") no-repeat center fixed; 
+    background: url("../images/beer_bottles.png") repeat center fixed; 
     background-size: cover;
     /*padding-bottom: 80px;*/
     height: 100%;
@@ -204,7 +209,7 @@ html {
 
 .Legend {
   line-height: 15px;
-  color: lightgrey;
+  color: #000;
   font-weight: bold
 }
 
