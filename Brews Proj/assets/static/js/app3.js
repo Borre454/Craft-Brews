@@ -1,3 +1,4 @@
+var myGeocode = {{ appData|tojson }};
 var appDataObj = JSON.parse(myGeocode)
 
 var statesDataObj = appDataObj[0]
