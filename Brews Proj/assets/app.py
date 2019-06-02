@@ -29,6 +29,19 @@ for mc in mongoCollections:
 
 appData = json.dumps(appData, default=json_util.default)
 
+def mapData():
+    db = client.DataForMap
+    mongoCollection = ['geoJSON']
+    app1Data = []
+    collectionForMap = db[mongoCollection]
+    cfMap = list(collectionForMap.find())
+    del cfMap[0]['_id']
+    app1Data.append({mongoCollection:cfMap[0]})
+    app1Data = json.dumps(app1Data, default=json_util.default)
+    return app1Data
+
+
+
 @app.route("/")
 def welcome():
     """Return the homepage."""
@@ -43,7 +56,7 @@ def welcome1():
 @app.route("/assets/templates/map.html")
 def geomap():
     """Return the leaflet map"""
-    return render_template("map.html")
+    return render_template("map.html", appData=mapData())
 
 
 @app.route("/assets/templates/bubble.html")
