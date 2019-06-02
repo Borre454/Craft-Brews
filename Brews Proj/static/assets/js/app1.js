@@ -63,10 +63,11 @@ function style(Data) {
         });
     };
     
-
+    console.log("sd --- ")
+    console.log(appDataObjZero)
 
     // Using the features array sent back in the API data, create a GeoJSON layer and add it to the map
-    var stateslayer = L.geoJSON(statesData, {
+    var stateslayer = L.geoJSON(appDataObjZero, {
         style: style,
         onEachFeature: onEachFeature
     });
