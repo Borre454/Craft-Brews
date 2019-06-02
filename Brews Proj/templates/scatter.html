@@ -93,6 +93,8 @@
     </div> <!--/.row .row-no-gutters -->
   </div> <!--/.container-fluid -->
 
+  
+
   <!-- scripts -->
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
@@ -101,8 +103,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/5.5.0/d3.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
 
+  <script>
+    var myGeocode = {{ cfScatter|tojson }};
+    var appDataObj = JSON.parse(myGeocode)
+    console.log("datat --- ")
+    console.log(appDataObj)
+  </script>
+
   <!-- Our JS -->
-  <script type="text/javascript" src="../static/assets/js/config.js"></script>
+  <!-- <script type="text/javascript" src="../static/assets/js/config.js"></script> -->
   <script type="text/javascript" src="../../static/assets/js/app2.js"></script>
 
 </body>

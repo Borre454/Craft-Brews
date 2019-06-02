@@ -129,17 +129,16 @@ yText
 // ========================
 
 // Import our CSV data with d3's .csv import method.
-d3.csv("/data/craft_beer_fest_data3.csv").then(function(beerData) {
-  // Visualize the data
-  visualize(beerData);
+visualize(appDataObj);
 
-  beerData.forEach(function(d) {
-    d.Table = +d.Table;
-    d.Score = +d.Score;
-    d.rAvg = +d.rAvg;
-    d.Ratings = +d.Ratings;
-    d.ABV = parseFloat(d.ABV);
-  });
+console.log(appDataObj) 
+
+appDataObj.forEach(function(d) {
+  d.Table = +d.Table;
+  d.Score = +d.Score;
+  d.rAvg = +d.rAvg;
+  d.Ratings = +d.Ratings;
+  d.ABV = parseFloat(d.ABV);
 });
 
 // 3. Create our visualization function

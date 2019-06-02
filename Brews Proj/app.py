@@ -42,7 +42,19 @@ cfMap = list(collectionForMap.find())
 del cfMap[0]['_id']
 
 cfMap = json.dumps(cfMap, default=json_util.default)
-print(cfMap)
+# print(cfMap)
+
+#scatter data
+db_forscatter = client.Brews
+collectionForScatter = db_forscatter["beers"]
+
+cfScatter = list(collectionForScatter.find())
+
+del cfScatter[0]['_id']
+
+cfScatter = json.dumps(cfScatter, default=json_util.default)
+
+print(cfScatter)
 
 @app.route("/")
 def welcome():
@@ -70,7 +82,7 @@ def bubbles():
 @app.route("/assets/templates/scatter.html")
 def scatter():
     """Return the scatter plots."""
-    return render_template("scatter.html")
+    return render_template("scatter.html", cfScatter=cfScatter)
 
 @app.route("/")
 def data():
