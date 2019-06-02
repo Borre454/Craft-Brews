@@ -128,7 +128,7 @@ yText
 // 2. Import our .csv file.
 // ========================
 
-// Import our CSV data with d3's .csv import method.
+// Import our CSV data from html from flask 
 visualize(appDataObj);
 
 console.log(appDataObj) 

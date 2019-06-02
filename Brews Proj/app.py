@@ -54,7 +54,7 @@ del cfScatter[0]['_id']
 
 cfScatter = json.dumps(cfScatter, default=json_util.default)
 
-print(cfScatter)
+# print(cfScatter)
 
 @app.route("/")
 def welcome():
@@ -84,10 +84,10 @@ def scatter():
     """Return the scatter plots."""
     return render_template("scatter.html", cfScatter=cfScatter)
 
-@app.route("/")
+@app.route("/data")
 def data():
     print(appData)
-    return  appData
+    return  "-appData-"+appData+"-cfMap-"+cfMap+"-cfScatter-"+cfScatter
 
 
 
