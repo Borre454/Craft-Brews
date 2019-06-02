@@ -1,6 +1,13 @@
 // Store Paths to Data Files
 // var JSONPath = "{{ url_for('static', filename='data/JSON/newgeo.json') }}";
 
+var mapcode = {{ app1Data|tojson }};
+var AppDataObj = JSON.parse(mapcode)
+
+var stateDataObj = AppDataObj[0]
+var stateDataObjFinal = stateDataObj["geoJSON"]
+console.log(stateDataObjFinal)
+
 // If-else functions to select state colors
 function getColor(d) {
     return d >= 50  ? '#ffffe0' :
