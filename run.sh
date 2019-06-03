@@ -1,0 +1,1 @@
+FLASK_APP=Brews_Proj/app.py flask run
