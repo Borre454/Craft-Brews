@@ -1,1 +1,1 @@
-web: gunicorn Brews_Proj.app:app
+web: gunicorn app.js
