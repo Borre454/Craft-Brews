@@ -1,5 +1,5 @@
 # Project2-Brews
-To run flask successfully, first run files: mikes_mongo_merge.ipynb, data_cleanup_final.ipynb, and mergeCSV-JSON.ipynb from the data cleanup folder. These notebooks will initialize the Mongo databases that each of the javascript files will respectively pull data from. After the cleanup files have been run, open gtibash in the folder containing app.py and use commands "$ export FLASK_APP=app.py
+To run flask successfully, first run files: mikes_mongo_merge.ipynb, data_cleanup_final.ipynb, and mergeCSV-JSON.ipynb from the data cleanup folder. These notebooks will initialize the Mongo databases that each of the javascript files will respectively pull data from. After the cleanup files have been run, open gitbash in the folder containing app.py and use commands: "$ export FLASK_APP=app.py
 $ python -m flask run" to host the program locally.
 
 
